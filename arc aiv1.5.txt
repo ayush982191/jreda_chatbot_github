@@ -1,0 +1,127 @@
+1. Solar Rooftop (Government Buildings)
+✅ 2. Solar Pumps (PM-KUSUM B)
+✅ 3. Mini / Micro Solar Grids
+✅ 4. PM JANMAN Scheme
+✅ 5. Giridih Solar City
+✅ 6. Canal-Top / Large Solar Plants
+✅ 7. Solar Street Lights & Mid-Mast
+
+app.py
+.env
+
+routes/
+    auth.py
+    chat.py
+
+services/
+    gemini_service.py
+    grievance_service.py
+    speech_service.py
+    pdf_service.py
+
+utils/
+    language_loader.py
+    otp_handler.py
+
+Data/
+    JREDA_Farmer_context.json
+    Queries.json
+    sla_config.json
+    PM_KUSUM_details_hindi.pdf
+
+templates/
+    index.html
+
+static/
+    style.css
+    script.js
+
+
+
+
+
+pip install flask flask-cors python-dotenv requests google-genai beautifulsoup4 lxml
+
+Solar Pumps
+
+Mini Grids
+
+Rooftop Solar
+
+Solar Water Heater
+
+Solar Street Light
+
+Solar High Mast
+
+PM-KUSUM Scheme (C)
+
+Solar PV Off-Grid
+Systems
+
+PM JANMAN
+
+Canal-Top Solar Plants
+
+Giridih Solar City
+
+
+
+
+Raise Grievance
+
+upon clicking on the button  '  raise grievance  '  on 
+the schemes button  should be shown those are linked to the LLM  those are should be in their language only 
+
+the schemes button  are ' Solar Pumps ,  
+
+Mini Grids , 
+
+Rooftop Solar , 
+
+Solar Water Heater ,  
+
+Solar Street Light ,  
+
+Solar High Mast ,  
+
+PM-KUSUM Scheme (C) , 
+
+Solar PV Off-Grid ,  
+Systems ,  
+
+PM JANMAN ,  
+
+Canal-Top Solar Plants , 
+
+Giridih Solar City , other  '
+these  buttons are should  be in their language only 
+
+as of now if user clicking on any button 
+then AI chatbot asks in their language button  ' please explain the issue '
+according  to that in the good like bullet or line by line format  the  grievance should be created  for example 
+
+for this particular  scheme button selection ' PM-KUSUM Scheme (C) ' the AI can  refer the this 
+PM_KUSUM_details_hindi.pdf
+for  others schemes button AI LLM can scrpr the official website JREDA 
+
+" 
+Grievance ID:	" GRV1770978837410166  " coded randon id in this format .
+ID:	coded random unique id 
+Category:	'selected button schema ' 
+Status:	pending 
+Created Date:	 hard coded  current date 
+Assigned Vendor : refer this data 	 ' assigned_vendor ' column present in the data  JREDA_Farmer_context
+Expected Resolution :  refers	JREDA_sla_config for in this mentioned how hour expected to be resolved  
+
+"
+
+this given in the good format output by the AI chatbot  in that particular language button selection   
+
+
+9519417754
+GRV0060 
+
+session.pop("device_mode", None) -> important
+
+

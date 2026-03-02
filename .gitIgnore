@@ -1,0 +1,24 @@
+# Python environment
+venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Editor/IDE files
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs, SQLite dbs, etc.
+*.log
+*.sqlite3
+
+# Distribution/build
+build/
+dist/
+*.egg-info/

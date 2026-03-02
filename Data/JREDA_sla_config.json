@@ -1,0 +1,22 @@
+[
+  {
+    "category":"Solar panel issue",
+    "sla_hours":96
+  },
+  {
+    "category":"Mechanical issue",
+    "sla_hours":72
+  },
+  {
+    "category":"Electrical issue",
+    "sla_hours":72
+  },
+  {
+    "category":"Other",
+    "sla_hours":120
+  },
+  {
+    "category":"Pump not working",
+    "sla_hours":48
+  }
+]

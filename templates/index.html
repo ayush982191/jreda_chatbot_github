@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JREDA AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- Chat Bubble -->
+<div class="chat-bubble" id="chat-bubble" onclick="openChat()">
+    💬
+</div>
+
+<!-- Chat Widget -->
+<div class="chat-widget" id="chat-widget">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+
+        <img src="/static/images/jreda-corner.png" class="header-logo">
+
+        <div class="header-text">
+            <h3>JREDA AI Assistant</h3>
+            <small>Jharkhand Renewable Energy Development Agency</small>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn" onclick="toggleMaximize()">⛶</button>
+            <button class="icon-btn" onclick="closeChat()">✕</button>
+        </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="chat-body" id="chat-body">
+
+        <div class="bot-message">
+            Welcome! I'm your JREDA Scheme Assistant.<br><br>
+            Please choose your preferred language:
+        </div>
+
+        <div class="language-buttons">
+
+            <button onclick="selectLanguage('English', event)">English</button>
+
+            <button onclick="selectLanguage('Hindi', event)">
+                Hindi <br><span>हिन्दी</span>
+            </button>
+
+            <button onclick="selectLanguage('Bengali', event)">
+                Bangla <br><span>বাংলা</span>
+            </button>
+
+            <button onclick="selectLanguage('Santali', event)">
+                Santali <br><span>ᱥᱟᱱᱛᱟᱲᱤ</span>
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="chat-footer">
+
+        <textarea
+            id="user-input"
+            rows="1"
+            placeholder="Type your message..."
+            oninput="autoGrow(this)">
+        </textarea>
+
+        <button class="mic-btn" id="mic-btn" onclick="startRecording()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#0b2c6b">
+                <path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3z"/>
+                <path d="M19 11a7 7 0 01-14 0H3a9 9 0 0018 0h-2z"/>
+            </svg>
+        </button>
+
+        <button class="send-btn" onclick="sendMessage()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#b22222">
+                <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+            </svg>
+        </button>
+
+    </div>
+
+</div>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>
