@@ -22,3 +22,7 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# legacy flask templates/static (moved to frontend)
+templates/
+static/

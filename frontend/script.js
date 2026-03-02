@@ -1,3 +1,9 @@
+// Base URL for API calls. During development this points to the
+// locally running Flask server (port 5000). When deployed, you can either
+// set this to an absolute URL or rely on Netlify redirects which preserve
+// the relative path.
+const API_BASE = "http://127.0.0.1:5000";
+
 let currentStep = "language";
 let selectedLanguage = null;
 let selectedSchema = null;
@@ -202,7 +208,7 @@ function selectLanguage(lang, event) {
 
     selectedLanguage = lang;
 
-    fetch("/select-language", {
+    fetch(API_BASE + "/select-language", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language: lang })
@@ -322,7 +328,7 @@ function sendMessage() {
 
     if (currentStep === "mobile") {
 
-        fetch("/verify-mobile", {
+        fetch(API_BASE + "/verify-mobile", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ mobile: value })
@@ -343,7 +349,7 @@ function sendMessage() {
 
     if (currentStep === "otp") {
 
-        fetch("/verify-otp", {
+        fetch(API_BASE + "/verify-otp", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ otp: value })
@@ -457,7 +463,7 @@ function handleMainMenuClick(label) {
 
         showThinking();
 
-        fetch("/chat", {
+        fetch(API_BASE + "/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -559,7 +565,7 @@ function sendPumpStatusRequest() {
 
     showThinking();
 
-    fetch("/chat", {
+    fetch(API_BASE + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -728,7 +734,7 @@ function sendSchemeQuery(option) {
 
     showThinking();   // 🔥 THIS WILL SHOW 🤖 Typing...
 
-    fetch("/chat", {
+    fetch(API_BASE + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

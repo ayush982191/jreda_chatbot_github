@@ -10,7 +10,12 @@ with open("Data/JREDA_Farmer_context.json", encoding="utf-8") as f:
 
 @auth_bp.route("/")
 def home():
-    return render_template("index.html")
+    # The frontend is served separately (e.g. via Netlify).
+    # If someone visits the backend root, give a simple JSON notice or
+    # redirect to the frontend URL if you have one.
+    return jsonify({
+        "message": "Please access the chat widget through the frontend application."
+    })
 
 @auth_bp.route("/select-language", methods=["POST"])
 def select_language():
