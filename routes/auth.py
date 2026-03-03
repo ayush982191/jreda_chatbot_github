@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session
+from flask_cors import cross_origin
 import json
 from utils.language_loader import get_mobile_prompt
 from utils.otp_handler import generate_otp, verify_otp
@@ -29,6 +30,7 @@ def select_language():
     })
 
 @auth_bp.route("/verify-mobile", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def verify_mobile():
     mobile = request.json.get("mobile")
 
@@ -56,6 +58,7 @@ def verify_mobile():
         return jsonify({"status": "not_registered"})
 
 @auth_bp.route("/verify-otp", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def verify_user_otp():
     user_otp = request.json.get("otp")
     real_otp = session.get("otp")
