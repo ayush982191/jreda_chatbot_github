@@ -33,13 +33,19 @@ if origins is not None:
 CORS(app, **cors_args)
 app.secret_key = "super_secret_key_123"
 
-# fallback in case flask-cors doesn't inject the header on some responses
+# ensure Access-Control-Allow-Credentials is never duplicated
 @app.after_request
-def _add_cors_credentials_header(response):
-    if "Access-Control-Allow-Credentials" not in response.headers:
+def _normalize_cors_credentials(response):
+    # some proxies or layered CORS decorators can cause two identical headers
+    # to be emitted, which the browser folds into "true, true" and then
+    # rejects the request.  Strip any duplicates and always send a single
+    # validated value.
+    if "Access-Control-Allow-Credentials" in response.headers:
+        # rewrite unconditionally to prevent commas
         response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
+# fallback in case flask-cors doesn't inject the header on some responses
 app.register_blueprint(auth_bp)
 app.register_blueprint(chat_bp)
 

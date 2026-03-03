@@ -631,9 +631,10 @@ def chat():
     # =====================================================
     # ================= GUEST ACCESS CONTROL =================
     if not session.get("verified"):
-
-        schema = request.json.get("schema")
-        user_input = request.json.get("message", "").strip()
+        # we may receive JSON without the proper Content-Type header
+        data = request.get_json(force=True, silent=True) or {}
+        schema = data.get("schema")
+        user_input = (data.get("message", "") or "").strip()
         language = session.get("language", "English")
 
         allowed_options = [
@@ -657,8 +658,9 @@ def chat():
         # Otherwise block
         return jsonify({"reply": "Please verify your mobile number first."})
 
-    user_input = request.json.get("message", "").strip()
-    schema = request.json.get("schema")
+    data = request.get_json(force=True, silent=True) or {}
+    user_input = (data.get("message", "") or "").strip()
+    schema = data.get("schema")
 
     language = session.get("language", "English")
     farmer_context = session.get("farmer_data")

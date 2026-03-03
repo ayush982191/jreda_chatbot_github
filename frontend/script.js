@@ -390,9 +390,8 @@ function sendMessage() {
         fetch(API_BASE + "/chat", {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                message: value,
+               message: value,
                 schema: selectedSchema
             })
         })
@@ -468,7 +467,6 @@ function handleMainMenuClick(label) {
         fetch(API_BASE + "/chat", {
             method: "POST",
             credentials: "include",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 message: "ACTION_TRACK_GRIEVANCE",
                 mode: "track"
@@ -571,7 +569,6 @@ function sendPumpStatusRequest() {
     fetch(API_BASE + "/chat", {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             message: "SOLAR_PUMP_STATUS"
         })
@@ -740,7 +737,6 @@ function sendSchemeQuery(option) {
 
     fetch(API_BASE + "/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             message: option,
             schema: selectedSchema
