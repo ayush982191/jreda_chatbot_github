@@ -374,7 +374,6 @@ function sendMessage() {
                 appendMessage(LANG[selectedLanguage].invalidOtp, "bot-message");
             }
         });
-
         return;
     }
 
