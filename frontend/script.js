@@ -387,7 +387,7 @@ function sendMessage() {
 
         showThinking();
 
-        fetch("/chat", {
+        fetch(API_BASE + "/chat", {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
