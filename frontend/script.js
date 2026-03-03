@@ -330,6 +330,7 @@ function sendMessage() {
 
         fetch(API_BASE + "/verify-mobile", {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ mobile: value })
         })
@@ -351,6 +352,7 @@ function sendMessage() {
 
         fetch(API_BASE + "/verify-otp", {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ otp: value })
         })
@@ -388,6 +390,7 @@ function sendMessage() {
 
         fetch("/chat", {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 message: value,
@@ -465,6 +468,7 @@ function handleMainMenuClick(label) {
 
         fetch(API_BASE + "/chat", {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 message: "ACTION_TRACK_GRIEVANCE",
@@ -567,6 +571,7 @@ function sendPumpStatusRequest() {
 
     fetch(API_BASE + "/chat", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             message: "SOLAR_PUMP_STATUS"
