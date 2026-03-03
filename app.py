@@ -5,8 +5,10 @@ from routes.chat import chat_bp
 
 app = Flask(__name__)
 # enable cookies to be sent across origins (required for session handling)
+# SAMESITE=None requires the cookie to be Secure per modern browser policies.
 app.config["SESSION_COOKIE_SAMESITE"] = "None"
-app.config["SESSION_COOKIE_SECURE"] = False  # set True in production with HTTPS
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
 # Only allow our frontend origin to make credentialed requests
 CORS(app, supports_credentials=True,
      origins=["https://unrivaled-snickerdoodle-557c7f.netlify.app"])
