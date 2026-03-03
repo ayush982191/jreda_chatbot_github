@@ -402,6 +402,10 @@ function sendMessage() {
 
             removeThinking();
             appendMessage(data.reply, "bot-message");
+            if (data.audio) {
+                const audio = new Audio("data:audio/mp3;base64," + data.audio);
+                audio.play();
+}
 
             if (data.reply.includes("Grievance ID")) {
 
@@ -479,6 +483,10 @@ function handleMainMenuClick(label) {
 
             removeThinking();
             appendMessage(data.reply, "bot-message");
+            if (data.audio) {
+                const audio = new Audio("data:audio/mp3;base64," + data.audio);
+                audio.play();
+}
 
             
 
@@ -580,7 +588,10 @@ function sendPumpStatusRequest() {
 
         removeThinking();
         appendMessage(data.reply, "bot-message");
-
+        if (data.audio) {
+            const audio = new Audio("data:audio/mp3;base64," + data.audio);
+            audio.play();
+        }
         // ✅ After device response, show main menu again
         showMainMenu();
 
@@ -818,13 +829,18 @@ let recognition = null;
 
 function startRecording() {
 
+    if (!selectedLanguage) {
+        alert("Please select language first.");
+        return;
+    }
+
     const micButton = document.getElementById("mic-btn");
 
     const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-        alert("Microphone not supported. Please use Google Chrome.");
+        alert("Please use Google Chrome.");
         return;
     }
 
@@ -833,13 +849,28 @@ function startRecording() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.lang =
-        selectedLanguage === "Hindi" ? "hi-IN" :
-        selectedLanguage === "Bengali" ? "bn-IN" :
-        "en-US";
+    // ✅ Proper language mapping
+    switch (selectedLanguage) {
+        case "Hindi":
+            recognition.lang = "hi-IN";
+            break;
+        case "Bengali":
+            recognition.lang = "bn-IN";
+            break;
+        case "Santali":
+            recognition.lang = "hi-IN"; // fallback
+            break;
+        default:
+            recognition.lang = "en-IN";
+    }
 
     micButton.classList.add("recording");
-    recognition.start();
+
+    try {
+        recognition.start();
+    } catch (e) {
+        console.log("Already recording");
+    }
 
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript;
@@ -857,6 +888,5 @@ function startRecording() {
         micButton.classList.remove("recording");
     };
 }
-
 
 

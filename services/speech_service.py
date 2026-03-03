@@ -90,10 +90,20 @@ from io import BytesIO
 # 🔊 TEXT TO SPEECH (TTS)
 # ============================================
 
-def text_to_speech(text, language="en"):
+def text_to_speech(text, selected_language="English"):
 
     try:
-        tts = gTTS(text=text, lang=language)
+        # Map UI language to gTTS language code
+        lang_map = {
+            "English": "en",
+            "Hindi": "hi",
+            "Bengali": "bn",
+            "Santali": "hi"  # fallback (no official Santali support)
+        }
+
+        tts_lang = lang_map.get(selected_language, "en")
+
+        tts = gTTS(text=text, lang=tts_lang)
 
         audio_buffer = BytesIO()
         tts.write_to_fp(audio_buffer)

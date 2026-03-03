@@ -631,10 +631,9 @@ def chat():
     # =====================================================
     # ================= GUEST ACCESS CONTROL =================
     if not session.get("verified"):
-        # we may receive JSON without the proper Content-Type header
-        data = request.get_json(force=True, silent=True) or {}
-        schema = data.get("schema")
-        user_input = (data.get("message", "") or "").strip()
+
+        schema = request.json.get("schema")
+        user_input = request.json.get("message", "").strip()
         language = session.get("language", "English")
 
         allowed_options = [
@@ -658,19 +657,18 @@ def chat():
         # Otherwise block
         return jsonify({"reply": "Please verify your mobile number first."})
 
-    data = request.get_json(force=True, silent=True) or {}
-    user_input = (data.get("message", "") or "").strip()
-    schema = data.get("schema")
+    user_input = request.json.get("message", "").strip()
+    schema = request.json.get("schema")
 
     language = session.get("language", "English")
     farmer_context = session.get("farmer_data")
 
-    lang_code = {
-        "English": "en",
-        "Hindi": "hi",
-        "Bengali": "bn",
-        "Santali": "en"
-    }.get(language, "en")
+    # lang_code = {
+    #     "English": "en",
+    #     "Hindi": "hi",
+    #     "Bengali": "bn",
+    #     "Santali": "en"
+    # }.get(language, "en")
 
     lower_input = user_input.lower()
 
@@ -680,7 +678,7 @@ def chat():
     if user_input == "ACTION_TRACK_GRIEVANCE":
         session["mode"] = "track"
         reply = handle_track_grievance(session)
-        audio = text_to_speech(reply, lang_code)
+        audio = text_to_speech(reply, language)
         return jsonify({"reply": reply, "audio": audio})
 
     # =====================================================
@@ -688,7 +686,7 @@ def chat():
     # =====================================================
     if user_input == "SOLAR_PUMP_STATUS":
         reply = handle_device_status(farmer_context, language)
-        audio = text_to_speech(reply, lang_code)
+        audio = text_to_speech(reply, language)
         return jsonify({"reply": reply, "audio": audio})
 
     # =====================================================
@@ -709,7 +707,7 @@ def chat():
         session.pop("last_issue", None)
 
         reply = handle_scheme_query(schema, user_input.strip(), language)
-        audio = text_to_speech(reply, lang_code)
+        audio = text_to_speech(reply, language)
 
         return jsonify({"reply": reply, "audio": audio})
 
@@ -749,7 +747,7 @@ Professional tone.
 """
 
         reply = generate_response(solution_prompt)
-        audio = text_to_speech(reply, lang_code)
+        audio = text_to_speech(reply, language)
         return jsonify({"reply": reply, "audio": audio})
 
     # =====================================================
@@ -759,10 +757,37 @@ Professional tone.
 
         issue_text = session.get("last_issue", "")
 
+        # =========================================
+        # STEP A: Generate LLM Issue Summary
+        # =========================================
+        summary_prompt = f"""
+You are JREDA Government AI Assistant.
+
+Summarize the user's issue professionally.
+
+User Reported Issue:
+{issue_text}
+
+Rules:
+- Do NOT add any heading.
+- Do NOT write "Issue Summary:".
+- Only return the explanation paragraph.
+- Mention possible technical reason.
+- Keep concise.
+- Reply strictly in {language}.
+- No markdown.
+- No bold.
+"""
+
+        llm_summary = generate_response(summary_prompt)
+
+        # =========================================
+        # STEP B: Store grievance using LLM summary
+        # =========================================
         record = store_grievance(
             {
                 "Category": schema,
-                "Issue Summary": issue_text
+                "Issue Summary": llm_summary   # ✅ LLM GENERATED SUMMARY
             },
             farmer_context
         )
@@ -770,44 +795,25 @@ Professional tone.
         session["awaiting_confirmation"] = False
         session.pop("last_issue", None)
 
-        final_prompt = f"""
-You are JREDA Government AI Assistant.
 
-IMPORTANT:
-Reply ONLY in {language}.
-No markdown.
-No bold.
-No general scheme explanation.
-Use ONLY the issue provided below.
-
-User Reported Issue:
-{issue_text}
-
-Format exactly like this:
-
+        reply = f"""
 Grievance Confirmation
 
-Grievance ID: {record['Grievance ID']}
+Grievance ID: {record.get('Grievance ID')}
 Mobile Number: {session.get("mobile")}
-Category: {record['Category']}
-Status: {record['Status']}
-Created Date: {record['Created Date']}
-Assigned Vendor: {record['Assigned Vendor']}
-Expected Resolution: {record['Expected Resolution']}
+Pump ID: {farmer_context.get('pump_id', 'N/A')}
+Category: {record.get('Category')}
+Status: {record.get('Status')}
+Created Date: {record.get('Created Date')}
+Assigned Vendor: {record.get('Assigned Vendor')}
+Expected Resolution: {record.get('Expected Resolution')}
 
 Issue Summary:
-
-Keep the heading "Issue Summary:" in English.
-After that, explain ONLY the user's reported issue.
-Do NOT mention scheme-level delays.
-Do NOT add unrelated content.
-Do NOT invent new problems.
-Explain possible reason based strictly on user's issue.
-Keep it concise and professional.
+{llm_summary}
 """
 
-        reply = generate_response(final_prompt)
-        audio = text_to_speech(reply, lang_code)
+        reply = generate_response(reply)
+        audio = text_to_speech(reply, language)
 
         return jsonify({"reply": reply, "audio": audio})
 
@@ -843,6 +849,6 @@ Keep it concise and professional.
     """
 
     reply = generate_response(general_prompt)
-    audio = text_to_speech(reply, lang_code)
+    audio = text_to_speech(reply, language)
 
     return jsonify({"reply": reply, "audio": audio})
