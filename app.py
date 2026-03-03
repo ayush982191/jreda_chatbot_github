@@ -10,8 +10,11 @@ app.config["SESSION_COOKIE_SAMESITE"] = "None"
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 # Only allow our frontend origin to make credentialed requests
+# explicitly include OPTIONS so flask-cors will handle preflight
 CORS(app, supports_credentials=True,
-     origins=["https://unrivaled-snickerdoodle-557c7f.netlify.app"])
+     origins=["https://unrivaled-snickerdoodle-557c7f.netlify.app"],
+     methods=["POST","OPTIONS"],
+     allow_headers=["Content-Type"])
 app.secret_key = "super_secret_key_123"
 
 # fallback in case flask-cors doesn't inject the header on some responses

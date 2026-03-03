@@ -58,7 +58,7 @@ def verify_mobile():
         return jsonify({"status": "not_registered"})
 
 @auth_bp.route("/verify-otp", methods=["POST"])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True, methods=["POST","OPTIONS"])
 def verify_user_otp():
     user_otp = request.json.get("otp")
     real_otp = session.get("otp")
@@ -76,3 +76,11 @@ def verify_user_otp():
         })
     else:
         return jsonify({"status": "failed"})
+
+# also respond to preflight explicitly in case some middleware skips it
+@auth_bp.route("/verify-otp", methods=["OPTIONS"])
+@cross_origin(supports_credentials=True, methods=["POST","OPTIONS"])
+def verify_user_otp_options():
+    response = jsonify({})
+    response.status_code = 200
+    return response
