@@ -7,12 +7,12 @@ const API_BASE = "https://jreda-chatbot-github.onrender.com";
 let currentStep = "language";
 let selectedLanguage = null;
 let selectedSchema = null;
-let grievanceFlow = false;
+let grievanceFlow = false;    
 let issueCollected = false;
 let trackMode = false;
 let guestMode = false;
 let guestName = null;
-
+// test name ayush
 
 const LANG = {
 
