@@ -2,7 +2,7 @@
 // locally running Flask server (port 5000). When deployed, you can either
 // set this to an absolute URL or rely on Netlify redirects which preserve
 // the relative path.
-const API_BASE = "https://jreda-chatbot-github.onrender.com";
+const API_BASE = "http://127.0.0.1:5000";
 
 let currentStep = "language";
 let selectedLanguage = null;
@@ -212,6 +212,7 @@ function selectLanguage(lang, event) {
 
     fetch(API_BASE + "/select-language", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language: lang })
     })
