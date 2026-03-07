@@ -2,7 +2,7 @@
 // locally running Flask server (port 5000). When deployed, you can either
 // set this to an absolute URL or rely on Netlify redirects which preserve
 // the relative path.
-const API_BASE = "https://jreda-chatbot-github.onrender.com";
+const API_BASE = "http://127.0.0.1:5000";
 
 let currentStep = "language";
 let selectedLanguage = null;
@@ -182,6 +182,14 @@ function autoGrow(textarea) {
 
 function appendButtons(buttons, type = "schema") {
 
+    // Clear previously rendered buttons of the same type so they don't stack
+    // in the DOM (which can make it look like a single long line).
+    if (type === "schema") {
+        document.querySelectorAll(".schema-buttons").forEach(el => el.remove());
+    } else {
+        document.querySelectorAll(".language-buttons").forEach(el => el.remove());
+    }
+
     let container = document.createElement("div");
 
     if (type === "main") {
@@ -193,6 +201,7 @@ function appendButtons(buttons, type = "schema") {
     buttons.forEach(btn => {
         let button = document.createElement("button");
         button.className = "dynamic-btn";
+        button.style.width = "100%"; // ensure each button fills its grid cell
         button.innerText = btn.label;
         button.onclick = btn.action;
         container.appendChild(button);
@@ -878,10 +887,19 @@ function startRecording() {
     }
 
     recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById("user-input").value = transcript;
+ 
+        const transcript = event.results[0][0].transcript.trim();
+ 
+        const inputField = document.getElementById("user-input");
+ 
+        inputField.value = transcript;
+ 
+        autoGrow(inputField);
+ 
         micButton.classList.remove("recording");
-        sendMessage();
+ 
+        inputField.focus();
+ 
     };
 
     recognition.onerror = function(event) {
@@ -894,4 +912,14 @@ function startRecording() {
     };
 }
 
+function handleEnter(event) {
+ 
+    if (event.key === "Enter" && !event.shiftKey) {
+ 
+        event.preventDefault();
+        sendMessage();
+ 
+    }
+ 
+}
 

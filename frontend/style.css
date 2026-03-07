@@ -154,6 +154,29 @@ body {
     color: white;
 }
 
+/* ================= SCHEMA BUTTONS ================= */
+
+.schema-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.schema-buttons button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #0b2c6b;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
 /* ================= FOOTER ================= */
 
 .chat-footer {
