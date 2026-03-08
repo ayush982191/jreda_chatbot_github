@@ -59,14 +59,16 @@
 
     </div>
 
-    <!-- FOOTER -->
-    <div class="chat-footer">
+    <!-- FOOTER --> 
+<div class="chat-footer">
 
+    <div style="display: flex; align-items: center; width: 100%; gap: 10px;">
         <textarea
             id="user-input"
             rows="1"
             placeholder="Type your message..."
-            oninput="autoGrow(this)">
+            oninput="autoGrow(this)"
+            onkeydown="handleEnter(event)">
         </textarea>
 
         <button class="mic-btn" id="mic-btn" onclick="startRecording()">
@@ -81,12 +83,18 @@
                 <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
             </svg>
         </button>
-
+        
     </div>
-
+    
+</div>
 </div>
 
 <script src="script.js"></script>
 
 </body>
 </html>
+
+<!-- cd "d:\lumbini\JredaComplete\jreda_chatbot\AI chatbot V1.5\frontend"
+python -m http.server 8000 -->
+
+<!-- python app.py -->

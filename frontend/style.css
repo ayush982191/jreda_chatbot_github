@@ -212,11 +212,66 @@ body {
     background: transparent;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* ================= MIC BLINK ON CLICK ================= */
+
+.mic-btn:active {
+    animation: mic-blink 0.2s ease !important;
+}
+
+@keyframes mic-blink {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.2;
+        transform: scale(0.85);
+    }
+}
 
 /* ================= MIC RECORDING EFFECT ================= */
 
 .mic-btn.recording {
-    position: relative;
+    animation: mic-pulse 1s infinite !important;
+}
+
+.mic-btn.recording svg {
+    fill: #ff4444 !important;
+}
+
+@keyframes mic-pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ================= SCROLLBAR STYLING ================= */
+
+.chat-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background: #0b2c6b;
+    border-radius: 10px;
+}
+
+.chat-body::-webkit-scrollbar-thumb:hover {
+    background: #1f3b70;
 }

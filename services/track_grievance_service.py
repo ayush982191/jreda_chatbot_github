@@ -76,6 +76,15 @@ def handle_track_grievance(session):
         )
 
     language = session.get("language", "English")
+    # Force Romanized Santali
+    if language.lower() == "santali":
+        language_instruction = "Romanized Santali (write Santali using English letters only, not Ol Chiki script)"
+    else:
+        language_instruction = language
+
+    farmer_data = session.get("farmer_data", {})    
+    
+    
     farmer_data = session.get("farmer_data", {})
 
     grievance = session.get("last_grievance")
@@ -102,7 +111,7 @@ def handle_track_grievance(session):
         prompt = f"""
 You are JREDA AI Assistant.
 
-Reply strictly in {language}.
+Reply strictly in  {language_instruction}.
 Be professional and short.
 
 The farmer currently has NO registered grievance.
@@ -116,7 +125,7 @@ Politely inform them that:
         prompt = f"""
 You are JREDA Government AI Assistant.
 
-Reply strictly in {language}.
+Reply strictly in {language_instruction}.
 Be formal, professional and polite.
 Use proper spacing between paragraphs.
 Do NOT use bullet points.

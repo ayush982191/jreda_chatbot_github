@@ -2,8 +2,8 @@
 // locally running Flask server (port 5000). When deployed, you can either
 // set this to an absolute URL or rely on Netlify redirects which preserve
 // the relative path.
-const API_BASE = "https://jreda-chatbot-github.onrender.com";
-// const API_BASE = "http://127.0.0.1:5000";
+// const API_BASE = "https://jreda-chatbot-github.onrender.com";
+const API_BASE = "http://127.0.0.1:5000";
 
 let currentStep = "language";
 let selectedLanguage = null;
@@ -841,6 +841,7 @@ function toggleMaximize() {
 /* ================= STT (Speech to Text) ================= */
 
 let recognition = null;
+ 
 
 function startRecording() {
 
@@ -859,12 +860,24 @@ function startRecording() {
         return;
     }
 
+    // If already recording, stop it
+    if (recognition) {
+        try {
+            recognition.stop();
+        } catch (e) {
+            console.log("Error stopping recognition:", e);
+        }
+        recognition = null;
+        micButton.classList.remove("recording");
+        return;
+    }
+
     recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    // ✅ Proper language mapping
+    // Proper language mapping
     switch (selectedLanguage) {
         case "Hindi":
             recognition.lang = "hi-IN";
@@ -879,47 +892,47 @@ function startRecording() {
             recognition.lang = "en-IN";
     }
 
+    // Add pulse class when recording starts
     micButton.classList.add("recording");
 
-    try {
-        recognition.start();
-    } catch (e) {
-        console.log("Already recording");
-    }
+    recognition.onstart = function() {
+        console.log("Recording started");
+    };
 
     recognition.onresult = function(event) {
- 
         const transcript = event.results[0][0].transcript.trim();
- 
         const inputField = document.getElementById("user-input");
- 
         inputField.value = transcript;
- 
         autoGrow(inputField);
- 
-        micButton.classList.remove("recording");
- 
-        inputField.focus();
- 
     };
 
     recognition.onerror = function(event) {
         console.error("Mic Error:", event.error);
         micButton.classList.remove("recording");
+        recognition = null;
     };
 
     recognition.onend = function() {
+        console.log("Recording ended");
         micButton.classList.remove("recording");
+        recognition = null;
     };
-}
 
+    try {
+        recognition.start();
+    } catch (e) {
+        console.log("Error starting recognition:", e);
+        micButton.classList.remove("recording");
+        recognition = null;
+    }
+}
 function handleEnter(event) {
  
     if (event.key === "Enter" && !event.shiftKey) {
  
         event.preventDefault();
         sendMessage();
- 
+
     }
  
 }
