@@ -1,80 +1,3 @@
-# from services.pdf_service import extract_pdf_text
-# from services.web_scraper_service import fetch_website_content
-# from services.gemini_service import generate_response
-
-# # Load once (important for performance)
-# PDF_TEXT = extract_pdf_text("Data/PM_KUSUM_details_hindi.pdf")
-# WEBSITE_TEXT = fetch_website_content()
-
-
-# def handle_scheme_query(schema, user_option, language):
-
-#     # -------------------------------------------------
-#     # 🔥 LIMIT CONTENT SIZE (PREVENT TOKEN OVERFLOW)
-#     # -------------------------------------------------
-
-#     website_content = WEBSITE_TEXT[:6000]
-
-#     if schema == "PM-KUSUM Scheme (C)":
-#         pdf_content = PDF_TEXT[:4000]
-
-#         knowledge_source = f"""
-# OFFICIAL WEBSITE CONTENT:
-# {website_content}
-
-# OFFICIAL PM-KUSUM PDF CONTENT:
-# {pdf_content}
-# """
-#     else:
-#         knowledge_source = f"""
-# OFFICIAL WEBSITE CONTENT:
-# {website_content}
-# """
-
-#     # -------------------------------------------------
-#     # 🔐 STRICT GOVERNMENT PROMPT
-#     # -------------------------------------------------
-
-#     prompt = f"""
-# You are JREDA Government AI Assistant.
-
-# Reply strictly in {language}.
-# Use a formal and professional government tone.
-
-# Formatting Rules:
-# - Do NOT use markdown symbols like ** or *.
-# - Use proper headings in plain text.
-# - Use numbered points (1., 2., 3.) where applicable.
-# - Use short paragraphs.
-# - Leave one blank line between sections.
-# - Make headings clearly written in Title Case.
-
-# Answer only from the official content provided below.
-# Do NOT invent information.
-# If information is not available, say:
-# "The requested information is not available in the official records."
-
-# Scheme: {schema}
-# User Request: {user_option}
-
-# ====================================================
-# OFFICIAL CONTENT STARTS
-# ====================================================
-
-# {knowledge_source}
-
-# ====================================================
-# OFFICIAL CONTENT ENDS
-# ====================================================
-# """
-
-#     try:
-#         response = generate_response(prompt)
-#         return response.strip() if response else "No response generated."
-#     except Exception as e:
-#         print("Scheme LLM Error:", str(e))
-#         return "Unable to fetch scheme details at the moment. Please try again later."
-
 from services.pdf_service import extract_pdf_text
 from services.web_scraper_service import fetch_website_content
 from services.gemini_service import generate_response
@@ -167,3 +90,4 @@ OFFICIAL CONTENT ENDS
     except Exception as e:
         print("Scheme LLM Error:", str(e))
         return "Unable to fetch scheme details at the moment. Please try again later."
+ 

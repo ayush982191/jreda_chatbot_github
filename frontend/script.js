@@ -764,6 +764,7 @@ function sendSchemeQuery(option) {
 
     fetch(API_BASE + "/chat", {
         method: "POST",
+        credentials: "include", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             message: option,

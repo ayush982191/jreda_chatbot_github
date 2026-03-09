@@ -947,7 +947,7 @@ def chat():
     # =====================================================
     scheme_options = [
         "Eligibility & Conditions",
-        "Subsidy Status",
+        "Benefits",
         "How to Apply",
         "Contact Details",
         "Registration"
