@@ -416,6 +416,9 @@ function sendMessage() {
 
             removeThinking();
             appendMessage(data.reply, "bot-message");
+            if (data.show_menu) {
+                showMainMenu();
+            }
             if (data.audio) {
                 const audio = new Audio("data:audio/mp3;base64," + data.audio);
                 audio.play();
@@ -432,12 +435,12 @@ function sendMessage() {
         })
         .catch(() => {
             removeThinking();
-            appendMessage("Server error ❌", "bot-message");
+            appendMessage("Something went wrong — but don’t worry, it’s on us. \n We’re fixing it right now. Please retry in a moment.", "bot-message");
         });
     }
 }
 
-/* ================= MAIN MENU ================= */
+/* ================= MAIN MENU ================= */  
 
 function showMainMenu() {
 
@@ -509,7 +512,7 @@ function handleMainMenuClick(label) {
         })
         .catch(() => {
             removeThinking();
-            appendMessage("Server error ❌", "bot-message");
+            appendMessage("Something went wrong — but don’t worry, it’s on us. We’re fixing it right now. Please retry in a moment.", "bot-message");
         });
 
         return;
@@ -613,7 +616,7 @@ function sendPumpStatusRequest() {
     })
     .catch(() => {
         removeThinking();
-        appendMessage("Server error ❌", "bot-message");
+        appendMessage("Something went wrong — but don’t worry, it’s on us. We’re fixing it right now. Please retry in a moment.", "bot-message");
     });
 }
 
@@ -788,7 +791,7 @@ function sendSchemeQuery(option) {
 
         removeThinking();
         console.error("Scheme fetch error:", error);
-        appendMessage("Server error ❌", "bot-message");
+        appendMessage("Something went wrong — but don’t worry, it’s on us. We’re fixing it right now. Please retry in a moment.", "bot-message");
 
     });
 }

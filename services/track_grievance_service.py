@@ -262,6 +262,7 @@ Assigned Vendor: {grievance.get('assigned_vendor')}
 Expected Resolution: {grievance.get('expected_resolution_date')}
 Escalation Level: {grievance.get('escalation_level')}
 Last Updated: {grievance.get('updated_date')}
+Description: {grievance.get('issue_summary')}
 
 If you need further assistance, please contact JREDA helpline.
 """

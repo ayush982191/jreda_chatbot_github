@@ -985,7 +985,7 @@ def chat():
  
         return jsonify({"reply": reply})
  
-    # =====================================================
+# =====================================================
     # CONFIRMATION WORDS
     # =====================================================
     confirmation_words = [
@@ -994,7 +994,22 @@ def chat():
         "হ্যাঁ"
     ]
  
-    is_confirmation = any(word in lower_input for word in confirmation_words)
+    negative_words = [
+    "no", "nope", "not now",
+    "nah", "naa", "na",
+    "nahi", "nahin",
+    "नहीं", "नही",
+    "না"
+     ]
+    
+ 
+    # is_negative = any(word in lower_input for word in negative_words)
+    first_word = lower_input.split()[0] if lower_input else ""
+
+    is_confirmation = first_word in confirmation_words
+    is_negative = first_word in negative_words
+ 
+
  
     # =====================================================
     # STEP 1: USER DESCRIBES ISSUE
@@ -1003,7 +1018,7 @@ def chat():
  
         session["last_issue"] = user_input
         session["awaiting_confirmation"] = True
- 
+        # logger.info("[CHAT] Entered Step 1 - User described issue, awaiting confirmation")
        
  
         solution_prompt = f"""
@@ -1095,6 +1110,47 @@ Rules:
         #audio = text_to_speech(reply, language)
  
         return jsonify({"reply": reply})
+   
+    # =====================================================
+    # STEP 2B: USER DECLINES → LLM HANDLES
+    # =====================================================
+    if session.get("awaiting_confirmation") and is_negative:
+        # logger.info("[CHAT] User declined grievance creation")
+        issue_text = session.get("last_issue", "")
+        # logger.info("[CHAT] Stored issue text: %s", issue_text)
+        decline_prompt = f"""
+You are JREDA Government AI Assistant.
+ 
+User reported issue:
+{issue_text}
+ 
+The assistant asked if the user wants to raise a grievance.
+The user declined.
+ 
+Respond politely in exactly 2 sentences:
+1. Acknowledge user's decision.
+2. Inform they can contact again if issue continues.
+
+ 
+Reply strictly in {language_instruction}.
+If Santali is used, write ONLY in Romanized Santali using English letters.
+ 
+Maximum 25 words.
+No markdown.
+No bold.
+Professional tone.
+"""
+        # logger.info("[CHAT] Decline prompt sent to LLM: %s", decline_prompt)
+    
+        reply = generate_response(decline_prompt)
+    
+        session["awaiting_confirmation"] = False
+        session.pop("last_issue", None)
+    
+            # return jsonify({"reply": reply},"show_menu": True)
+    
+        
+        return jsonify({"reply": reply, "show_menu": True})
  
     # =====================================================
     # DEFAULT NORMAL RESPONSE
