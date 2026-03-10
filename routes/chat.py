@@ -928,10 +928,31 @@ def chat():
     # =====================================================
     # TRACK GRIEVANCE BUTTON
     # =====================================================
+# ================= TRACK BUTTON =================
     if user_input == "ACTION_TRACK_GRIEVANCE":
+
         session["mode"] = "track"
+        session["awaiting_grievance_id"] = True
+
+        return jsonify({
+            "reply": "Please enter your Grievance ID to track the status."
+        })
+
+
+    # ================= TRACK MODE INPUT =================
+    if session.get("mode") == "track" and session.get("awaiting_grievance_id"):
+
+        grievance_id = user_input.strip()
+
+        if not grievance_id:
+            return jsonify({"reply": "Grievance ID cannot be empty."})
+
+        session["track_grievance_id"] = grievance_id
+        session["awaiting_grievance_id"] = False
+        session["mode"] = None
+
         reply = handle_track_grievance(session)
-        #audio = text_to_speech(reply, language)
+
         return jsonify({"reply": reply})
  
     # =====================================================
