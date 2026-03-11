@@ -5,7 +5,7 @@ import json
 import random
 from datetime import datetime, timezone
  
-SHEETDB_URL = "https://sheetdb.io/api/v1/uj1y32yara8fx"
+SHEETDB_URL = "https://sheetdb.io/api/v1/s1f7oc6clafd4"
  
 with open("Data/JREDA_sla_config.json") as f:
     SLA_CONFIG = json.load(f)
